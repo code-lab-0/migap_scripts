@@ -162,7 +162,8 @@ sub readGFile {
         $tmp{"write"} = 1;
       }
     }
-    elsif(exists $tmp{"write"} && /^CONTIG/){
+#    elsif(exists $tmp{"write"} && /^CONTIG/){
+    elsif(exists $tmp{"write"} && /^ORIGIN/){    # CONTIGの存在しないエントリーがあるのでORIGINに変更
       $$acc2refseq{ $tmp{"acc"} } = $tmp{"arr"};
       %tmp = ();
       %nodup = ();
