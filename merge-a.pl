@@ -406,11 +406,12 @@ sub addBlastGbk {
   my $ind = " " x 21;
 
   my %tmp = ();
+  my $not_basecount = 1;   # ORIGIN中にannotationを埋め込ませない。
   open my $fout, ">", $outFile or die;
   open my $fin, "<", $inFile or die;
   while(<$fin>){
     chomp;
-    if(/^\s{5}(\S+)\s+(\S+)/){
+    if(/^\s{5}(\S+)\s+(\S+)/ && $not_basecount){
       if(exists $tmp{"isCDS"} && $tmp{"isCDS"} == 1 &&
          exists $$data{$tmp{"pos"}}){
         my $alnarr = $$data{$tmp{"pos"}};
@@ -434,13 +435,23 @@ sub addBlastGbk {
       $tmp{"isCDS"} = 1 if $tmp{"name"} eq "CDS";
     }
     elsif(/^BASE COUNT/){
+      $not_basecount = 0;
       if(exists $tmp{"isCDS"} && $tmp{"isCDS"} == 1 &&
          exists $$data{$tmp{"pos"}}){
         my $alnarr = $$data{$tmp{"pos"}};
         for my $aln(@$alnarr){
+          my $acc = "";
           for my $a(@$aln){
             print $fout &breakStr(sprintf("/%s", $a),
               $ind, $LINE_CHAR_GE), "\n";
+            $acc = $1 if $a =~ /db_xref="ref:(\S+)"/;
+          }
+          if(exists $$ACC2REFSEQ{$acc}){
+            my $tmpref = $$ACC2REFSEQ{$acc};
+            for my $a(@$tmpref){
+              print $fout &breakStr(sprintf("%s", $a),
+                $ind, $LINE_CHAR_GE), "\n";
+            }
           }
         }
       }
