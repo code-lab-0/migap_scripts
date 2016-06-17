@@ -44,7 +44,7 @@ foreach my $file(@rFiles){
   ($data, $useRef) = &readBlastP($data, $useRef, $file, $REF_DB, 60, 60);
 }
 foreach my $file(@tFiles){
-# ($data, $useRef) = &readBlastP($data, $useRef, $file, $TRE_DB, 30, 30);
+  ($data, $useRef) = &readBlastP($data, $useRef, $file, $TRE_DB, 30, 30);
 }
 
 our $ACC2REFSEQ = &readGFiles($useRef, \@gFiles);
