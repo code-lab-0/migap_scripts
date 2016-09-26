@@ -232,7 +232,7 @@ sub readTFile {
       ($seq, $sta, $end, $strand) = ($1, $2, $3, "+");
       ($sta, $end, $strand) = ($3, $2, "-") if $sta > $end;
     }
-    elsif(/^Type: (\w{3}|Undet)\s+Anticodon: (\w{3}|\?\?\?) at .+\((\d+)\-(\d+)\)/){
+    elsif(/^Type: (\S+)\s+Anticodon: (\w{3}|\?\?\?) at .+\((\d+)\-(\d+)\)/){
       ($type, $codon, $csta, $cend) = ($1, $2, $3, $4);
       ($csta, $cend) = ($4, $3) if $csta > $cend;
     }
